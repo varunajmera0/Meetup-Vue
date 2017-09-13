@@ -1,0 +1,59 @@
+<template>
+  <v-container>
+    <v-layout row wrap class="mb-2">
+      <v-flex xs12 sm6 class="text-xs-center text-sm-right">
+        <v-btn large router to="/meetups" class="info">Explore Meetups</v-btn>
+      </v-flex>
+      <v-flex xs12 sm6 class="text-xs-center text-sm-left">
+        <v-btn large router to="/meetup/new" class="info">Organize Meetup</v-btn>
+      </v-flex>
+    </v-layout>
+    <v-layout row>
+      <v-flex xs12 sm6 offset-sm3 class="text-xs-center">
+        <v-progress-circular indeterminate class="primary--text" :width="7" :size="70" v-if="loading"></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap v-if="!loading">
+      <v-flex xs-12>
+        <v-carousel style="cursor: pointer">
+          <v-carousel-item v-for="(item,i) in meetups" v-bind:src="item.imageUrl" :key="i" @click="onLoadMeetup(item.id)">
+            <div class="title">{{item.title}}</div>
+          </v-carousel-item>
+        </v-carousel>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap class="mt-2">
+      <v-flex xs12 class="text-xs-center">
+        <p>Join Our Awesome Meetups!</p>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+  export default {
+    computed: {
+      meetups () {
+        return this.$store.getters.featureMeetups
+      },
+      loading () {
+        return this.$store.getters.loading
+      }
+    },
+    methods: {
+      onLoadMeetup (id) {
+        this.$router.push('/meetups/' + id)
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  .title{
+    position: absolute;
+    bottom: 50px;
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 2em;
+  }
+</style>
